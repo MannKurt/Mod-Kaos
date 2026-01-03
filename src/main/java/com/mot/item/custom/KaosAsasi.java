@@ -65,7 +65,7 @@ public class KaosAsasi extends Item {
         // B) SHIFT VARSA (ŞARJ BAŞLAT)
         else {
             user.setCurrentHand(hand);
-            user.playSound(SoundEvents.ENTITY_WARDEN_SONIC_CHARGE, 3.0f, 1f);
+            user.playSound(SoundEvents.ENTITY_WARDEN_SONIC_CHARGE, 1.0f, 1f);
             return ActionResult.CONSUME;
         }
     }
@@ -111,13 +111,13 @@ public class KaosAsasi extends Item {
                             serverWorld.spawnEntity(simsek);
                         }
                     }
-                    world.createExplosion(null, hit.getPos().x, hit.getPos().y, hit.getPos().z, 4.0f, true, World.ExplosionSourceType.TNT);
+                    world.createExplosion(null, hit.getPos().x, hit.getPos().y, hit.getPos().z, 2.0f, true, World.ExplosionSourceType.TNT);
                 }
 
                 world.playSound(null, player.getX(), player.getY(), player.getZ(),
                         SoundEvents.ENTITY_WARDEN_SONIC_BOOM,
                         SoundCategory.PLAYERS,
-                        6.0f, 0.5f);
+                        2.0f, 0.5f);
 
                 // --- 5 CAN GİTME İŞLEMİ ---
                 // onStoppedUsing metodunda "hand" parametresi gelmez, aktif eli bulmalıyız.
