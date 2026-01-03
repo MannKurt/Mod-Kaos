@@ -2,22 +2,19 @@ package com.mot.mixin;
 
 import com.mot.item.ModItem;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.Mouse; // HEDEF SINIF ARTIK MOUSE
+import net.minecraft.client.Mouse;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
-@Mixin(Mouse.class) // <-- BURASI DEĞİŞTİ
+@Mixin(Mouse.class)
 public class KaosCameraMixin {
 
-    // Hedef metodu 'updateMouse' olarak değiştirdik çünkü fare hareketi orada hesaplanıyor.
-    // Target kısmını da 'Entity' olarak düzelttik.
-    @ModifyArgs(method = "updateMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;changeLookDirection(DD)V"))
+    @ModifyArgs(method = "updateMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;changeLookDirection(DD)V"))
     private void restrictCameraMovement(Args args) {
 
-        // Mouse sınıfı içindeyiz, oyuncuya ulaşmak için MinecraftClient kullanıyoruz
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
         if (player != null && player.isUsingItem()) {

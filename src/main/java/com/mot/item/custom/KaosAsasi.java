@@ -40,11 +40,8 @@ public class KaosAsasi extends Item {
 
         // A) SHIFT YOKSA (UÇUŞ)
         if (!user.isSneaking()) {
-            user.setVelocity(user.getRotationVector().multiply(3));
+            user.setVelocity(user.getRotationVector().multiply(2));
             user.velocityModified = true;
-
-            // DÜZELTME: user.getActiveHand() yerine yukarıda tanımladığımız 'itemStack'i veriyoruz.
-            // Çünkü eşya kullanımı anlık olduğu için 'ActiveHand' bazen boş dönebilir.
             user.getItemCooldownManager().set(itemStack, 100);
 
             return ActionResult.SUCCESS;
@@ -85,8 +82,6 @@ public class KaosAsasi extends Item {
                     world.createExplosion(null, hit.getPos().x, hit.getPos().y, hit.getPos().z, 4.0f, true, World.ExplosionSourceType.TNT);
                 }
             }
-
-            // DÜZELTME: Burada zaten parametre olarak gelen 'stack'i kullanıyoruz. Doğru kullanım bu.
             player.getItemCooldownManager().set(stack, 300); // 15 Saniye bekleme süresi
 
         } else {
@@ -95,8 +90,6 @@ public class KaosAsasi extends Item {
                 player.sendMessage(Text.of("§7Yeterince şarj olmadı!"), true);
             }
         }
-
-        // DÜZELTME: Metot boolean döndürmek zorunda. İşlem bittiği için true/false dönüyoruz.
         return true;
     }
 }
