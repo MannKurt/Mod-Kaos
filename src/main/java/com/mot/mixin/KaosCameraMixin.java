@@ -25,7 +25,7 @@ public class KaosCameraMixin {
                 double deltaX = args.get(0);
                 double deltaY = args.get(1);
 
-                double yavaslatmaMiktari = 0.15; // %85 Yavaşlatma
+                double yavaslatmaMiktari = 0.10; // Yavaşlatma
 
                 args.set(0, deltaX * yavaslatmaMiktari);
                 args.set(1, deltaY * yavaslatmaMiktari);

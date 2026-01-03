@@ -21,7 +21,9 @@ import net.minecraft.util.Identifier;
 public class ModItem {
 
     public static final Item KAOS_ASASI = registerItem("kaos_asasi",
-            new KaosAsasi(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Mod.MOD_ID,"kaos_asasi")))));
+            new KaosAsasi(new Item.Settings()
+                    .maxDamage(750)
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Mod.MOD_ID,"kaos_asasi")))));
 
     public static final Item LOKUM = registerItem("lokum",
             new Item(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Mod.MOD_ID,"lokum")))
