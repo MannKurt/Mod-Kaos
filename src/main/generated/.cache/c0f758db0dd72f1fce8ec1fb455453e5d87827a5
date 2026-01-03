@@ -1,0 +1,19 @@
+// 1.21.10	-999999999-01-01T00:00:00	Mod/Model Definitions
+6ce75abc114ef9e1bfbd1f2d8bcdbaa723b2b2c8 assets/mod/blockstates/blok1.json
+78c4db08bc9c159d6b350203dff7648d3c2c9a3b assets/mod/blockstates/blok2.json
+6cf3da0ddb1481c031f93b6b3447e9f4c45814bc assets/mod/items/blok1.json
+7f565494f11b88fa7b4bc72241fa9360777ccb95 assets/mod/items/blok2.json
+987ce719c6025b549aee212e7b97abfe374edbc5 assets/mod/items/kaos_asasi.json
+5200f354a69df5a12a7e998b20666c9626714fe5 assets/mod/items/lokum.json
+b2aa8a0721b59baf6b6a3f59920418be325df0a8 assets/mod/items/mod_axe.json
+6dc059d5d635b055ab2a0ad76fa3204d722d41a4 assets/mod/items/mod_pickaxe.json
+6d0f4c957130ebe41e066a588765b83f08741432 assets/mod/items/mod_sword.json
+7184dcc91f849319499bfb9265efbef792f45a49 assets/mod/models/block/blok1.json
+3bb8e50aacec0b4fe8b08929cd6b1a3ff983c92b assets/mod/models/block/blok2.json
+0748d5277abdf237c2ab76b9b959c551bba9d7e4 assets/mod/models/block/blok2_inner.json
+1718868be47e06404cd479f250487fa1de64aa33 assets/mod/models/block/blok2_outer.json
+1bee262cd3c2d28ddcad0e491c16b6b38e81d8a3 assets/mod/models/item/kaos_asasi.json
+a062dea983d9e0f1af1419de53b74b301d0fd9f1 assets/mod/models/item/lokum.json
+618fc9f7f48205452ddd8c10cf1b81625d35554b assets/mod/models/item/mod_axe.json
+d3a11e689f01666cfed922396f5c0336e17b9afd assets/mod/models/item/mod_pickaxe.json
+269afd8e7e4e74b65772d9bbf689644b38fffbf9 assets/mod/models/item/mod_sword.json

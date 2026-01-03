@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": "minecraft:poppy",
+    "S": "minecraft:sugar",
+    "W": "minecraft:wheat",
+    "X": "minecraft:water_bucket"
+  },
+  "pattern": [
+    " # ",
+    "WXW",
+    "SSS"
+  ],
+  "result": {
+    "count": 6,
+    "id": "mod:lokum"
+  }
+}

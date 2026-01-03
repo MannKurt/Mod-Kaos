@@ -1,5 +1,6 @@
 package com.mot;
 
+import com.mot.block.ModBlock;
 import com.mot.item.ModItem;
 import com.mot.item.ModItemGroups;
 import net.fabricmc.api.ModInitializer;
@@ -19,6 +20,7 @@ public class Mod implements ModInitializer {
 	public void onInitialize() {
 		ModItem.registerModItem();
 		ModItemGroups.registerItemGroups();
+		ModBlock.registerModBlocks();
 
 		LOGGER.info("Hello world! AnanıSkm Dünya hayatım bok gibi sürekli ölümle mücadele ediyorym.");
 	}

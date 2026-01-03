@@ -1,0 +1,4 @@
+// 1.21.10	-999999999-01-01T00:00:00	Mod/Tags for minecraft:block
+5043990d5ebb420038a6930822ab171fa7889eb6 data/minecraft/tags/block/mineable/pickaxe.json
+5043990d5ebb420038a6930822ab171fa7889eb6 data/minecraft/tags/block/needs_iron_tool.json
+e2a8bb8e221f47def6d6e26168adc13e1f2fdd18 data/minecraft/tags/block/stairs.json
