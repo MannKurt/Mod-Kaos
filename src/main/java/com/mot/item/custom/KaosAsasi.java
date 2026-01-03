@@ -1,6 +1,5 @@
 package com.mot.item.custom;
 
-import com.mot.item.ModItem;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LightningEntity;
 import net.minecraft.entity.SpawnReason;
@@ -8,8 +7,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.consume.UseAction; // 1.21.2+ için doğru yer
-import net.minecraft.util.ActionResult; // Sadece bu yeterli
+import net.minecraft.item.consume.UseAction;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.world.World;
@@ -25,18 +24,18 @@ public class KaosAsasi extends Item {
     // --- 1. AYARLAR ---
     @Override
     public int getMaxUseTime(ItemStack stack, LivingEntity user) {
-        return 72000;
+        return 72000; // Yaklaşık 1 saat (Şarj süresi limiti)
     }
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
-        return UseAction.BOW;
+        return UseAction.BOW; // Yay gibi gerilme animasyonu
     }
 
-    // --- 2. KULLANIM (SAĞ TIK) ---
-    // YENİ SİSTEM: Dönüş tipi artık sadece 'ActionResult'
+    // --- 2. KULLANIM (SAĞ TIK BAŞLANGICI) ---
     @Override
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
+        // Elimizdeki eşyayı değişkene atıyoruz
         ItemStack itemStack = user.getStackInHand(hand);
 
         // A) SHIFT YOKSA (UÇUŞ)
@@ -44,32 +43,34 @@ public class KaosAsasi extends Item {
             user.setVelocity(user.getRotationVector().multiply(3));
             user.velocityModified = true;
 
-            user.getItemCooldownManager().set(user.getStackInHand(user.getActiveHand()), 100);
+            // DÜZELTME: user.getActiveHand() yerine yukarıda tanımladığımız 'itemStack'i veriyoruz.
+            // Çünkü eşya kullanımı anlık olduğu için 'ActiveHand' bazen boş dönebilir.
+            user.getItemCooldownManager().set(itemStack, 100);
 
-            // Eşya değişmediği için direkt SUCCESS dönüyoruz
             return ActionResult.SUCCESS;
         }
 
-        // B) SHIFT VARSA (ŞARJ)
+        // B) SHIFT VARSA (ŞARJ BAŞLAT)
         else {
             user.setCurrentHand(hand);
-
-            // Yeni sistemde CONSUME kullanımı
             return ActionResult.CONSUME;
         }
     }
 
-    // --- 3. TUŞU BIRAKINCA (SALDIRI) ---
+    // --- 3. TUŞU BIRAKINCA (SALDIRI GERÇEKLEŞME ANI) ---
     @Override
-    public boolean onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) { // Dönüş tipi 'void' yerine 'boolean' olabilir mi kontrol et, genelde void'dir.
+    public boolean onStoppedUsing(ItemStack stack, World world, LivingEntity user, int remainingUseTicks) {
+        // Eğer kullanan oyuncu değilse işlemi iptal et
         if (!(user instanceof PlayerEntity player)) return false;
 
         int maxSure = this.getMaxUseTime(stack, user);
         int kullanilanSure = maxSure - remainingUseTicks;
 
+        // En az 30 tick (1.5 saniye) şarj edildiyse
         if (kullanilanSure >= 30) {
 
             if (!world.isClient()) {
+                // 50 blok ileriye bak
                 HitResult hit = player.raycast(50.0D, 0.0f, false);
 
                 if (hit.getType() == HitResult.Type.BLOCK) {
@@ -80,16 +81,22 @@ public class KaosAsasi extends Item {
                             serverWorld.spawnEntity(simsek);
                         }
                     }
+                    // Patlama yarat
                     world.createExplosion(null, hit.getPos().x, hit.getPos().y, hit.getPos().z, 4.0f, true, World.ExplosionSourceType.TNT);
                 }
             }
 
-            player.getItemCooldownManager().set(stack, 300);
+            // DÜZELTME: Burada zaten parametre olarak gelen 'stack'i kullanıyoruz. Doğru kullanım bu.
+            player.getItemCooldownManager().set(stack, 300); // 15 Saniye bekleme süresi
 
         } else {
+            // Şarj yetersizse
             if (!world.isClient()) {
                 player.sendMessage(Text.of("§7Yeterince şarj olmadı!"), true);
             }
         }
+
+        // DÜZELTME: Metot boolean döndürmek zorunda. İşlem bittiği için true/false dönüyoruz.
+        return true;
     }
 }
