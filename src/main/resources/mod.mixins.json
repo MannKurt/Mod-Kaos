@@ -5,6 +5,9 @@
 	"mixins": [
 		"ExampleMixin"
 	],
+	"client": [
+		"KaosCameraMixin"
+	],
 	"injectors": {
 		"defaultRequire": 1
 	},

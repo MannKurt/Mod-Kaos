@@ -1,41 +1,37 @@
 package com.mot.mixin;
 
 import com.mot.item.ModItem;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Mouse; // HEDEF SINIF ARTIK MOUSE
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
-@Mixin(ClientPlayerEntity.class)
+@Mixin(Mouse.class) // <-- BURASI DEĞİŞTİ
 public class KaosCameraMixin {
 
-    @ModifyArgs(method = "changeLookDirection", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;changeLookDirection(DD)V"))
+    // Hedef metodu 'updateMouse' olarak değiştirdik çünkü fare hareketi orada hesaplanıyor.
+    // Target kısmını da 'Entity' olarak düzelttik.
+    @ModifyArgs(method = "updateMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;changeLookDirection(DD)V"))
     private void restrictCameraMovement(Args args) {
-        // Mixin içinde 'this' objesini ClientPlayerEntity olarak alıyoruz
-        ClientPlayerEntity player = (ClientPlayerEntity) (Object) this;
 
-        // 1. Oyuncu şu an bir eşya kullanıyor mu (Sağ tık basılı mı)?
-        if (player.isUsingItem()) {
+        // Mouse sınıfı içindeyiz, oyuncuya ulaşmak için MinecraftClient kullanıyoruz
+        ClientPlayerEntity player = MinecraftClient.getInstance().player;
 
-            // 2. Kullandığı eşya bizim Kaos Asası mı?
-            // DİKKAT: 'ModItems.KAOS_ASASI' kısmını kendi değişken adınla değiştir.
-            if (player.getActiveItem().isOf(ModItem.KAOS_ASASI)) {
+        if (player != null && player.isUsingItem()) {
 
-                // 3. Oyuncu Shift'e basıyor mu?
-                if (player.isSneaking()) {
+            // Eğer oyuncu shift basıyorsa ve elinde Kaos Asası varsa
+            if (player.isSneaking() && player.getActiveItem().isOf(ModItem.KAOS_ASASI)) {
 
-                    // Fare hareket değerlerini al (X ve Y ekseni)
-                    double deltaX = args.get(0);
-                    double deltaY = args.get(1);
+                double deltaX = args.get(0);
+                double deltaY = args.get(1);
 
-                    // Hassasiyeti %5'e düşür (Çok ağır döner)
-                    // Tamamen kilitlemek istersen 0.0 ile çarpabilirsin.
-                    double yavaslatmaMiktari = 0.05;
+                double yavaslatmaMiktari = 0.15; // %85 Yavaşlatma
 
-                    args.set(0, deltaX * yavaslatmaMiktari);
-                    args.set(1, deltaY * yavaslatmaMiktari);
-                }
+                args.set(0, deltaX * yavaslatmaMiktari);
+                args.set(1, deltaY * yavaslatmaMiktari);
             }
         }
     }
