@@ -2,9 +2,9 @@
   "itemgroup.mod": "Susser",
   "item.mod.lokum": "Lokum",
   "block.mod.blok1": "Blok 1",
-  "item.manniac.erdogan_stairs": "Blok2-Basamak",
-  "item.manniac.mod_sword": "Kılıç",
-  "item.manniac.mod_axe": "Balta",
-  "item.manniac.mod_pickaxe": "Kazma",
-  "item.manniac.kaos_asasi": "Kaos Asası"
+  "item.mod.blok2": "Blok2-Basamak",
+  "item.mod.mod_sword": "Kılıç",
+  "item.mod.mod_axe": "Balta",
+  "item.mod.mod_pickaxe": "Kazma",
+  "item.mod.kaos_asasi": "Kaos Asası"
 }

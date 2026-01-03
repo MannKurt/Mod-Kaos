@@ -45,7 +45,7 @@ public class KaosAsasi extends Item {
 
         // A) SHIFT YOKSA (UÇUŞ)
         if (!user.isSneaking()) {
-            user.setVelocity(user.getRotationVector().multiply(1)); // Hız çarpanı
+            user.setVelocity(user.getRotationVector().multiply(2)); // Hız çarpanı
             user.velocityModified = true;
 
             user.getItemCooldownManager().set(itemStack, 50);
@@ -56,8 +56,6 @@ public class KaosAsasi extends Item {
             if (!world.isClient()) {
                 // Hangi elde tutulduğunu belirle
                 EquipmentSlot slot = (hand == Hand.MAIN_HAND) ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-
-                // YENİ METOT: (Hasar Miktarı, Varlık, Slot)
                 itemStack.damage(1, user, slot);
             }
 
@@ -124,14 +122,12 @@ public class KaosAsasi extends Item {
                 // --- 5 CAN GİTME İŞLEMİ ---
                 // onStoppedUsing metodunda "hand" parametresi gelmez, aktif eli bulmalıyız.
                 EquipmentSlot slot = (player.getActiveHand() == Hand.MAIN_HAND) ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
-
-                // YENİ METOT
                 stack.damage(5, player, slot);
             }
 
             // Geri Tepme
             Vec3d lookDir = player.getRotationVector();
-            player.setVelocity(player.getVelocity().add(lookDir.multiply(-0.2)));
+            player.setVelocity(player.getVelocity().add(lookDir.multiply(-0.5)));
             player.velocityModified = true;
 
             // Cooldown
