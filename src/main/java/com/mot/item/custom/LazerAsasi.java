@@ -7,12 +7,14 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items; // EKLENDİ
 import net.minecraft.item.consume.UseAction;
 import net.minecraft.particle.DustParticleEffect;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text; // EKLENDİ
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
@@ -42,6 +44,14 @@ public class LazerAsasi extends Item {
 
     @Override
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
+        // --- KIZILTAŞ KONTROLÜ (BAŞLANGIÇ) ---
+        if (!user.getAbilities().creativeMode && !user.getInventory().contains(new ItemStack(Items.REDSTONE))) {
+            if (!world.isClient()) {
+                user.sendMessage(Text.of("§cYetersiz Kızıltaş!"), true);
+            }
+            return ActionResult.FAIL;
+        }
+
         ItemStack itemStack = user.getStackInHand(hand);
         user.setCurrentHand(hand);
         world.playSound(null, user.getX(), user.getY(), user.getZ(),
@@ -57,6 +67,17 @@ public class LazerAsasi extends Item {
         int kullanilanSure = maxSure - remainingUseTicks;
 
         if (kullanilanSure >= 20) {
+
+            // --- KIZILTAŞ KONTROLÜ (ATEŞLEME) ---
+            boolean hasAmmo = player.getAbilities().creativeMode || player.getInventory().contains(new ItemStack(Items.REDSTONE));
+            if (!hasAmmo) {
+                if (!world.isClient()) {
+                    player.sendMessage(Text.of("§cKızıltaş Eksik"), true);
+                    world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLOCK_DISPENSER_FAIL, SoundCategory.PLAYERS, 1.0f, 1.0f);
+                }
+                return false;
+            }
+
             if (!world.isClient()) {
 
                 // 1. IŞIN TARAMASI (Raycast)
@@ -77,7 +98,7 @@ public class LazerAsasi extends Item {
                     endPos = hitResult.getPos();
                 }
 
-                // B) Entity Kontrolü (İçinden geçmemesi için)
+                // B) Entity Kontrolü
                 Box box = player.getBoundingBox().stretch(rotation.multiply(maxDistance)).expand(1.0D, 1.0D, 1.0D);
                 EntityHitResult entityHitResult = ProjectileUtil.raycast(
                         player,
@@ -110,7 +131,6 @@ public class LazerAsasi extends Item {
                     // Alan Hasarı
                     List<LivingEntity> victims = world.getEntitiesByClass(LivingEntity.class, killBox, entity -> entity != player);
                     for (LivingEntity victim : victims) {
-
                         victim.damage(serverWorld, world.getDamageSources().playerAttack(player), 5.0f);
                     }
 
@@ -129,10 +149,15 @@ public class LazerAsasi extends Item {
                 player.setVelocity(player.getVelocity().add(lookDir.multiply(-0.5)));
                 player.velocityModified = true;
 
-                // Eşya Hasarı (3 Argümanlı - 1.21 Uyumlu)
+                // --- EŞYA VE CEPHANE TÜKETİMİ ---
                 if (user instanceof ServerPlayerEntity serverPlayer) {
                     EquipmentSlot slot = (player.getActiveHand() == Hand.MAIN_HAND) ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
                     stack.damage(2, serverPlayer, slot);
+
+                    // Kızıltaş Sil
+                    if (!player.getAbilities().creativeMode) {
+                        player.getInventory().remove(item -> item.isOf(Items.REDSTONE), 1, player.getInventory());
+                    }
                 }
 
                 player.getItemCooldownManager().set(stack, 0);

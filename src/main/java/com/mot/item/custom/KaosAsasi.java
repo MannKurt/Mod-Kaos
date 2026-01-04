@@ -7,8 +7,9 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ProjectileUtil; // GEREKLİ
+import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items; // EKLENDİ
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.sound.SoundCategory;
@@ -18,13 +19,13 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.item.consume.UseAction;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.hit.EntityHitResult; // GEREKLİ
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.Box; // GEREKLİ
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.RaycastContext; // GEREKLİ
+import net.minecraft.world.RaycastContext;
 import net.minecraft.world.World;
-import net.minecraft.text.Text;
+import net.minecraft.text.Text; // EKLENDİ
 
 public class KaosAsasi extends Item {
 
@@ -48,6 +49,16 @@ public class KaosAsasi extends Item {
     public ActionResult use(World world, PlayerEntity user, Hand hand) {
         ItemStack itemStack = user.getStackInHand(hand);
 
+        // --- LAPIS KONTROLÜ (GENEL) ---
+        boolean hasLapis = user.getAbilities().creativeMode || ((PlayerEntity)user).getInventory().contains(new ItemStack(Items.LAPIS_LAZULI));
+        if (!hasLapis) {
+            if (!world.isClient()) {
+                ((PlayerEntity)user).sendMessage(Text.of("§9Yetersiz Lapis Lazuli!"), true);
+                world.playSound(null, user.getX(), user.getY(), user.getZ(), SoundEvents.BLOCK_DISPENSER_FAIL, SoundCategory.PLAYERS, 1.0f, 1.0f);
+            }
+            return ActionResult.FAIL;
+        }
+
         // A) SHIFT YOKSA (UÇUŞ)
         if (!user.isSneaking()) {
             user.setVelocity(user.getRotationVector().multiply(2));
@@ -58,6 +69,11 @@ public class KaosAsasi extends Item {
             if (!world.isClient()) {
                 EquipmentSlot slot = (hand == Hand.MAIN_HAND) ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
                 itemStack.damage(1, user, slot);
+
+                // Lapis Sil (Uçuş için)
+                if (!user.getAbilities().creativeMode) {
+                    ((PlayerEntity)user).getInventory().remove(s -> s.isOf(Items.LAPIS_LAZULI), 1, ((PlayerEntity)user).getInventory());
+                }
             }
 
             return ActionResult.SUCCESS;
@@ -100,6 +116,13 @@ public class KaosAsasi extends Item {
         // Yeterince şarj edildiyse (30 tick = 1.5 saniye)
         if (kullanilanSure >= 30) {
 
+            // --- LAPIS KONTROLÜ (ATEŞLEME) ---
+            boolean hasLapis = player.getAbilities().creativeMode || player.getInventory().contains(new ItemStack(Items.LAPIS_LAZULI));
+            if (!hasLapis) {
+                if (!world.isClient()) player.sendMessage(Text.of("§9Lapisin bitti!"), true);
+                return false;
+            }
+
             if (!world.isClient()) {
 
                 // --- GELİŞMİŞ RAYCAST BAŞLANGICI (Entity + Blok) ---
@@ -138,7 +161,6 @@ public class KaosAsasi extends Item {
                 }
 
                 // --- HEDEF VURMA İŞLEMLERİ ---
-                // Eğer havaya (MISS) vurmadıysa (yani ya Blok ya Entity vurduysa)
                 if (hitResult.getType() != HitResult.Type.MISS) {
                     Vec3d targetPos = hitResult.getPos();
 
@@ -151,7 +173,6 @@ public class KaosAsasi extends Item {
                         }
 
                         // B) Patlama Yarat
-                        // Entity vurulduysa tam üstünde, blok vurulduysa bloğun kenarında patlar
                         world.createExplosion(null, targetPos.x, targetPos.y, targetPos.z, 4.0f, true, World.ExplosionSourceType.TNT);
                     }
                 }
@@ -161,9 +182,14 @@ public class KaosAsasi extends Item {
                         SoundCategory.PLAYERS,
                         2.0f, 0.5f);
 
-                // --- EŞYA HASARI ---
+                // --- EŞYA VE CEPHANE TÜKETİMİ ---
                 EquipmentSlot slot = (player.getActiveHand() == Hand.MAIN_HAND) ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
                 stack.damage(5, player, slot);
+
+                // Lapis Sil (Saldırı için)
+                if (!player.getAbilities().creativeMode) {
+                    player.getInventory().remove(s -> s.isOf(Items.LAPIS_LAZULI), 1, player.getInventory());
+                }
             }
 
             // Geri Tepme
