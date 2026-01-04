@@ -20,6 +20,7 @@ public class ModItemGroups {
                     .entries((displayContext, entries) -> {
 
                         entries.add(ModItem.KAOS_ASASI);
+                        entries.add(ModItem.LAZER_ASASI);
                         entries.add(ModItem.LOKUM);
                         entries.add(ModItem.MOD_SWORD);
                         entries.add(ModItem.MOD_PICKAXE);

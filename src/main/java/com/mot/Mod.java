@@ -22,6 +22,6 @@ public class Mod implements ModInitializer {
 		ModItemGroups.registerItemGroups();
 		ModBlock.registerModBlocks();
 
-		LOGGER.info("Hello world! AnanıSkm Dünya hayatım bok gibi sürekli ölümle mücadele ediyorym.");
+		LOGGER.info("Hello world!");
 	}
 }

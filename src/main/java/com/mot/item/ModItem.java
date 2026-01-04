@@ -2,6 +2,7 @@ package com.mot.item;
 
 import com.mot.Mod;
 import com.mot.item.custom.KaosAsasi;
+import com.mot.item.custom.LazerAsasi;
 import com.mot.item.custom.ModToolMaterial;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ConsumableComponents;
@@ -19,6 +20,11 @@ import net.minecraft.util.Identifier;
 
 
 public class ModItem {
+
+    public static final Item LAZER_ASASI = registerItem("lazer_asasi",
+            new LazerAsasi(new Item.Settings()
+                    .maxDamage(750)
+                    .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Mod.MOD_ID,"lazer_asasi")))));
 
     public static final Item KAOS_ASASI = registerItem("kaos_asasi",
             new KaosAsasi(new Item.Settings()

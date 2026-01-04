@@ -33,6 +33,7 @@ public class ModModel extends FabricModelProvider {
         itemModelGenerator.register(ModItem.MOD_AXE, Models.HANDHELD);
         itemModelGenerator.register(ModItem.MOD_PICKAXE, Models.HANDHELD);
         itemModelGenerator.register(ModItem.MOD_SWORD, Models.HANDHELD);
+        itemModelGenerator.register(ModItem.LAZER_ASASI, Models.HANDHELD);
 
     }
 }

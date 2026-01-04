@@ -4,6 +4,7 @@
 6cf3da0ddb1481c031f93b6b3447e9f4c45814bc assets/mod/items/blok1.json
 7f565494f11b88fa7b4bc72241fa9360777ccb95 assets/mod/items/blok2.json
 987ce719c6025b549aee212e7b97abfe374edbc5 assets/mod/items/kaos_asasi.json
+3f159047da779c76da9815aae4a52fb49b408f97 assets/mod/items/lazer_asasi.json
 5200f354a69df5a12a7e998b20666c9626714fe5 assets/mod/items/lokum.json
 b2aa8a0721b59baf6b6a3f59920418be325df0a8 assets/mod/items/mod_axe.json
 6dc059d5d635b055ab2a0ad76fa3204d722d41a4 assets/mod/items/mod_pickaxe.json
@@ -13,6 +14,7 @@ b2aa8a0721b59baf6b6a3f59920418be325df0a8 assets/mod/items/mod_axe.json
 0748d5277abdf237c2ab76b9b959c551bba9d7e4 assets/mod/models/block/blok2_inner.json
 1718868be47e06404cd479f250487fa1de64aa33 assets/mod/models/block/blok2_outer.json
 1bee262cd3c2d28ddcad0e491c16b6b38e81d8a3 assets/mod/models/item/kaos_asasi.json
+dc9906d1676d423aa7fc11697f4bd9b8583f2043 assets/mod/models/item/lazer_asasi.json
 a062dea983d9e0f1af1419de53b74b301d0fd9f1 assets/mod/models/item/lokum.json
 618fc9f7f48205452ddd8c10cf1b81625d35554b assets/mod/models/item/mod_axe.json
 d3a11e689f01666cfed922396f5c0336e17b9afd assets/mod/models/item/mod_pickaxe.json
